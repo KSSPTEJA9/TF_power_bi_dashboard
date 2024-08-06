@@ -1,0 +1,82 @@
+
+Table user_events {
+  event_id integer [primary key]
+  user_id integer
+  event_type varchar
+  time_id integer
+  region_id integer
+  country_id integer
+  device_id integer
+  referrer_id integer
+  post_id integer
+  follow_id integer
+  timestamp timestamp
+}
+
+Table DimUser {
+  user_id integer [primary key]
+  region_id integer
+  country_id integer
+}
+
+Table DimTime {
+  time_id integer [primary key]
+  timestamp timestamp
+  year integer
+  month integer
+  day integer
+  hour integer
+  minute integer
+  second integer
+}
+
+Table DimRegion {
+  region_id integer [primary key]
+  region_name varchar
+}
+
+Table DimCountry {
+  country_id integer [primary key]
+  country_name varchar
+}
+
+Table DimDevice {
+  device_id integer [primary key]
+  device_type varchar
+}
+
+Table DimReferrer {
+  referrer_id integer [primary key]
+  referrer_name varchar
+}
+
+Table DimPosts {
+  post_id integer [primary key]
+  title varchar
+  body text [note: 'Content of the post']
+  user_id integer
+  status varchar
+  created_at timestamp
+}
+
+Table DimFollows {
+  follow_id integer [primary key]
+  following_user_id integer
+  followed_user_id integer
+  created_at timestamp
+}
+
+Ref: user_events.user_id > DimUser.user_id
+Ref: user_events.time_id > DimTime.time_id
+Ref: user_events.region_id > DimRegion.region_id
+Ref: user_events.country_id > DimCountry.country_id
+Ref: user_events.device_id > DimDevice.device_id
+Ref: user_events.referrer_id > DimReferrer.referrer_id
+Ref: user_events.post_id > DimPosts.post_id
+Ref: user_events.follow_id > DimFollows.follow_id
+
+Ref: DimUser.region_id > DimRegion.region_id
+Ref: DimUser.country_id > DimCountry.country_id
+Ref: DimPosts.user_id > DimUser.user_id
+Ref: DimFollows.following_user_id > DimUser.user_id
+Ref: DimFollows.followed_user_id > DimUser.user_id
